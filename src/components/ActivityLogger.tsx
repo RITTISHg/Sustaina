@@ -122,10 +122,11 @@ export default function ActivityLogger({ onSaveLog, existingLogs }: ActivityLogg
 
         {/* Date choice */}
         <div className="flex items-center space-x-2 bg-[#efefdf] border border-[#e5e5d1] rounded-2xl px-4 py-2 w-fit">
-          <Calendar className="h-4 w-4 text-[#5A5A40]" />
-          <span className="text-xs font-bold text-[#4A4A3A]">Select Date:</span>
+          <Calendar className="h-4 w-4 text-[#5A5A40]" aria-hidden="true" />
+          <label htmlFor="activity-date" className="text-xs font-bold text-[#4A4A3A] cursor-pointer">Select Date:</label>
           <input
             type="date"
+            id="activity-date"
             value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)}
             max={new Date().toISOString().split('T')[0]}
@@ -147,6 +148,8 @@ export default function ActivityLogger({ onSaveLog, existingLogs }: ActivityLogg
                 <button
                   type="button"
                   key={cat.id}
+                  id={`logger-tab-${cat.id}`}
+                  aria-label={`Show ${cat.label} logger tab`}
                   onClick={() => setActiveSegment(cat.id as any)}
                   className={`flex flex-col items-center justify-center p-3 rounded-2xl border text-center transition-all cursor-pointer ${
                     isSelected
@@ -154,7 +157,7 @@ export default function ActivityLogger({ onSaveLog, existingLogs }: ActivityLogg
                       : 'border-[#e5e5d1] bg-[#fbfbf8] hover:bg-[#efefdf] hover:border-[#e5e5d1] text-[#6b6b5a]'
                   }`}
                 >
-                  <Icon className={`h-5 w-5 mb-1 ${isSelected ? 'text-[#4A4A3A]' : 'text-[#8b8b74]'}`} />
+                  <Icon className={`h-5 w-5 mb-1 ${isSelected ? 'text-[#4A4A3A]' : 'text-[#8b8b74]'}`} aria-hidden="true" />
                   <span className="text-[10px] sm:text-xs font-extrabold tracking-tight block leading-none">{cat.label.split(' ')[0]}</span>
                 </button>
               );
@@ -180,8 +183,9 @@ export default function ActivityLogger({ onSaveLog, existingLogs }: ActivityLogg
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {/* Car type */}
                     <div className="flex flex-col">
-                      <label className="text-xs font-bold text-[#6b6b5a] mb-1.5">Primary Vehicle Fuel</label>
+                      <label htmlFor="car-type-select" className="text-xs font-bold text-[#6b6b5a] mb-1.5">Primary Vehicle Fuel</label>
                       <select
+                        id="car-type-select"
                         value={carType}
                         onChange={(e) => setCarType(e.target.value as CarType)}
                         className="rounded-2xl border border-[#e5e5d1] p-3 text-sm text-[#4A4A3A] bg-[#fbfbf8] focus:border-[#5A5A40] focus:ring-1 focus:ring-[#5A5A40] transition-all outline-none"
@@ -197,12 +201,13 @@ export default function ActivityLogger({ onSaveLog, existingLogs }: ActivityLogg
                     {/* Car distance */}
                     {carType !== 'none' && (
                       <div className="flex flex-col">
-                        <label className="text-xs font-bold text-[#6b6b5a] mb-1.5 flex justify-between">
+                        <label htmlFor="car-distance-range" className="text-xs font-bold text-[#6b6b5a] mb-1.5 flex justify-between">
                           <span>Car Distance</span>
                           <span className="text-[#5A5A40] font-mono font-bold">{carDistance} km</span>
                         </label>
                         <input
                           type="range"
+                          id="car-distance-range"
                           min="0"
                           max="200"
                           step="1"
@@ -224,12 +229,13 @@ export default function ActivityLogger({ onSaveLog, existingLogs }: ActivityLogg
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     {/* Transit distance */}
                     <div className="flex flex-col">
-                      <label className="text-xs font-bold text-[#6b6b5a] mb-1.5 flex justify-between">
+                      <label htmlFor="transit-distance-num" className="text-xs font-bold text-[#6b6b5a] mb-1.5 flex justify-between">
                         <span>Bus & Train</span>
                         <span className="text-[#5A5A40] font-mono font-bold">{transitDistance} km</span>
                       </label>
                       <input
                         type="number"
+                        id="transit-distance-num"
                         min="0"
                         max="300"
                         value={transitDistance === 0 ? '' : transitDistance}
@@ -241,12 +247,13 @@ export default function ActivityLogger({ onSaveLog, existingLogs }: ActivityLogg
 
                     {/* Flight distance */}
                     <div className="flex flex-col">
-                      <label className="text-xs font-bold text-[#6b6b5a] mb-1.5 flex justify-between">
+                      <label htmlFor="flight-distance-num" className="text-xs font-bold text-[#6b6b5a] mb-1.5 flex justify-between">
                         <span>Flights (Air travel)</span>
                         <span className="text-[#5A5A40] font-mono font-bold">{flightDistance} km</span>
                       </label>
                       <input
                         type="number"
+                        id="flight-distance-num"
                         min="0"
                         max="5000"
                         value={flightDistance === 0 ? '' : flightDistance}
@@ -258,12 +265,13 @@ export default function ActivityLogger({ onSaveLog, existingLogs }: ActivityLogg
 
                     {/* Active travel */}
                     <div className="flex flex-col">
-                      <label className="text-xs font-bold text-[#6b6b5a] mb-1.5 flex justify-between">
+                      <label htmlFor="active-distance-num" className="text-xs font-bold text-[#6b6b5a] mb-1.5 flex justify-between">
                         <span>Walk / Bike (0g CO2)</span>
                         <span className="text-[#8B9474] font-mono font-bold">{activeDistance} km</span>
                       </label>
                       <input
                         type="number"
+                        id="active-distance-num"
                         min="0"
                         max="50"
                         value={activeDistance === 0 ? '' : activeDistance}
@@ -286,18 +294,19 @@ export default function ActivityLogger({ onSaveLog, existingLogs }: ActivityLogg
                   className="space-y-5"
                 >
                   <h3 className="font-serif italic text-xl text-[#4A4A3A] flex items-center gap-2">
-                    <Zap className="h-5 w-5 text-[#D9C5B2]" /> Utility Power & Renewable Shares
+                    <Zap className="h-5 w-5 text-[#D9C5B2]" aria-hidden="true" /> Utility Power & Renewable Shares
                   </h3>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {/* Electricity consumption */}
                     <div className="flex flex-col">
-                      <label className="text-xs font-bold text-[#6b6b5a] mb-1.5 flex justify-between">
+                      <label htmlFor="electricity-kwh" className="text-xs font-bold text-[#6b6b5a] mb-1.5 flex justify-between">
                         <span>Electricity Usage</span>
                         <span className="text-[#5A5A40] font-mono font-bold">{electricityKwh} kWh</span>
                       </label>
                       <input
                         type="range"
+                        id="electricity-kwh"
                         min="0"
                         max="60"
                         step="0.5"
@@ -315,12 +324,13 @@ export default function ActivityLogger({ onSaveLog, existingLogs }: ActivityLogg
 
                     {/* Solar power offset */}
                     <div className="flex flex-col">
-                      <label className="text-xs font-bold text-[#6b6b5a] mb-1.5 flex justify-between">
+                      <label htmlFor="solar-percentage" className="text-xs font-bold text-[#6b6b5a] mb-1.5 flex justify-between">
                         <span>Solar/Renewable Share</span>
                         <span className="text-[#8B9474] font-mono font-bold">{solarPercentage}%</span>
                       </label>
                       <input
                         type="range"
+                        id="solar-percentage"
                         min="0"
                         max="100"
                         step="5"
@@ -341,12 +351,13 @@ export default function ActivityLogger({ onSaveLog, existingLogs }: ActivityLogg
 
                   {/* Gas heating */}
                   <div className="flex flex-col max-w-sm">
-                    <label className="text-xs font-bold text-[#6b6b5a] mb-1.5 flex justify-between">
+                    <label htmlFor="natural-gas-kwh" className="text-xs font-bold text-[#6b6b5a] mb-1.5 flex justify-between">
                       <span>Natural Gas Heating/Stove daily estimate</span>
                       <span className="text-[#5A5A40] font-mono font-bold">{naturalGasKwh} kWh</span>
                     </label>
                     <input
                       type="number"
+                      id="natural-gas-kwh"
                       min="0"
                       max="150"
                       value={naturalGasKwh === 0 ? '' : naturalGasKwh}
@@ -368,14 +379,15 @@ export default function ActivityLogger({ onSaveLog, existingLogs }: ActivityLogg
                   className="space-y-5"
                 >
                   <h3 className="font-serif italic text-xl text-[#4A4A3A] flex items-center gap-2">
-                    <Utensils className="h-5 w-5 text-[#8B9474]" /> Dietary Baseline & Food Habits
+                    <Utensils className="h-5 w-5 text-[#8B9474]" aria-hidden="true" /> Dietary Baseline & Food Habits
                   </h3>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {/* Diet type */}
                     <div className="flex flex-col">
-                      <label className="text-xs font-bold text-[#6b6b5a] mb-1.5">Today Diet Profile</label>
+                      <label htmlFor="diet-type-select" className="text-xs font-bold text-[#6b6b5a] mb-1.5">Today Diet Profile</label>
                       <select
+                        id="diet-type-select"
                         value={dietType}
                         onChange={(e) => setDietType(e.target.value as DietType)}
                         className="rounded-2xl border border-[#e5e5d1] p-3 text-sm text-[#4A4A3A] bg-[#fbfbf8] focus:border-[#5A5A40] focus:ring-1 focus:ring-[#5A5A40] transition-all outline-none"
@@ -391,12 +403,15 @@ export default function ActivityLogger({ onSaveLog, existingLogs }: ActivityLogg
 
                     {/* Waste level */}
                     <div className="flex flex-col">
-                      <label className="text-xs font-bold text-[#6b6b5a] mb-1.5">Leftovers / Food Waste today</label>
-                      <div className="grid grid-cols-3 gap-2">
+                      <span className="text-xs font-bold text-[#6b6b5a] mb-1.5">Leftovers / Food Waste today</span>
+                      <div className="grid grid-cols-3 gap-2" role="group" aria-label="Leftovers and food waste profile">
                         {(['low', 'medium', 'high'] as const).map((level) => (
                           <button
                             type="button"
                             key={level}
+                            id={`waste-btn-${level}`}
+                            aria-label={`Select ${level} waste level`}
+                            aria-pressed={wasteLevel === level}
                             onClick={() => setWasteLevel(level)}
                             className={`py-2 px-1 rounded-xl border text-xs font-bold capitalize transition-all cursor-pointer ${
                               wasteLevel === level
@@ -416,12 +431,13 @@ export default function ActivityLogger({ onSaveLog, existingLogs }: ActivityLogg
 
                   {/* Local food sourcing */}
                   <div className="flex flex-col max-w-md">
-                    <label className="text-xs font-bold text-[#6b6b5a] mb-1.5 flex justify-between">
+                    <label htmlFor="local-percentage" className="text-xs font-bold text-[#6b6b5a] mb-1.5 flex justify-between">
                       <span>Proportion of Local & Seasonal Food</span>
                       <span className="text-[#8B9474] font-mono font-bold">{localFoodPercentage}%</span>
                     </label>
                     <input
                       type="range"
+                      id="local-percentage"
                       min="0"
                       max="100"
                       step="10"
@@ -448,13 +464,13 @@ export default function ActivityLogger({ onSaveLog, existingLogs }: ActivityLogg
                   className="space-y-5"
                 >
                   <h3 className="font-serif italic text-xl text-[#4A4A3A] flex items-center gap-2">
-                    <ShoppingBag className="h-5 w-5 text-[#C18C74]" /> Material Goods Purchases
+                    <ShoppingBag className="h-5 w-5 text-[#C18C74]" aria-hidden="true" /> Material Goods Purchases
                   </h3>
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     {/* Clothing */}
                     <div className="flex flex-col bg-[#fbfbf8] p-4 rounded-2xl border border-[#e5e5d1]">
-                      <label className="text-xs font-bold text-[#4A4A3A] mb-1 flex justify-between">
+                      <label htmlFor="clothing-items-num" className="text-xs font-bold text-[#4A4A3A] mb-1 flex justify-between">
                         <span>Clothing Items</span>
                         <span className="text-[#C18C74] font-mono font-bold">{clothingItems}</span>
                       </label>
@@ -462,6 +478,8 @@ export default function ActivityLogger({ onSaveLog, existingLogs }: ActivityLogg
                       <div className="flex items-center space-x-2">
                         <button
                           type="button"
+                          id="btn-clothing-decrease"
+                          aria-label="Decrease clothing items"
                           onClick={() => setClothingItems(Math.max(0, clothingItems - 1))}
                           className="h-8 w-8 flex items-center justify-center rounded-xl bg-white border border-[#e5e5d1] hover:bg-[#efefdf] text-[#4A4A3A] font-bold cursor-pointer"
                         >
@@ -469,6 +487,7 @@ export default function ActivityLogger({ onSaveLog, existingLogs }: ActivityLogg
                         </button>
                         <input
                           type="number"
+                          id="clothing-items-num"
                           min="0"
                           value={clothingItems}
                           onChange={(e) => setClothingItems(Math.max(0, Number(e.target.value)))}
@@ -476,6 +495,8 @@ export default function ActivityLogger({ onSaveLog, existingLogs }: ActivityLogg
                         />
                         <button
                           type="button"
+                          id="btn-clothing-increase"
+                          aria-label="Increase clothing items"
                           onClick={() => setClothingItems(clothingItems + 1)}
                           className="h-8 w-8 flex items-center justify-center rounded-xl bg-white border border-[#e5e5d1] hover:bg-[#efefdf] text-[#4A4A3A] font-bold cursor-pointer"
                         >
@@ -486,7 +507,7 @@ export default function ActivityLogger({ onSaveLog, existingLogs }: ActivityLogg
 
                     {/* Electronics */}
                     <div className="flex flex-col bg-[#fbfbf8] p-4 rounded-2xl border border-[#e5e5d1]">
-                      <label className="text-xs font-bold text-[#4A4A3A] mb-1 flex justify-between">
+                      <label htmlFor="electronics-items-num" className="text-xs font-bold text-[#4A4A3A] mb-1 flex justify-between">
                         <span>Electronics</span>
                         <span className="text-[#C18C74] font-mono font-bold">{electronicsItems}</span>
                       </label>
@@ -494,6 +515,8 @@ export default function ActivityLogger({ onSaveLog, existingLogs }: ActivityLogg
                       <div className="flex items-center space-x-2">
                         <button
                           type="button"
+                          id="btn-electronics-decrease"
+                          aria-label="Decrease electronics items"
                           onClick={() => setElectronicsItems(Math.max(0, electronicsItems - 1))}
                           className="h-8 w-8 flex items-center justify-center rounded-xl bg-white border border-[#e5e5d1] hover:bg-[#efefdf] text-[#4A4A3A] font-bold cursor-pointer"
                         >
@@ -501,6 +524,7 @@ export default function ActivityLogger({ onSaveLog, existingLogs }: ActivityLogg
                         </button>
                         <input
                           type="number"
+                          id="electronics-items-num"
                           min="0"
                           value={electronicsItems}
                           onChange={(e) => setElectronicsItems(Math.max(0, Number(e.target.value)))}
@@ -508,6 +532,8 @@ export default function ActivityLogger({ onSaveLog, existingLogs }: ActivityLogg
                         />
                         <button
                           type="button"
+                          id="btn-electronics-increase"
+                          aria-label="Increase electronics items"
                           onClick={() => setElectronicsItems(electronicsItems + 1)}
                           className="h-8 w-8 flex items-center justify-center rounded-xl bg-white border border-[#e5e5d1] hover:bg-[#efefdf] text-[#4A4A3A] font-bold cursor-pointer"
                         >
@@ -518,7 +544,7 @@ export default function ActivityLogger({ onSaveLog, existingLogs }: ActivityLogg
 
                     {/* General Goods */}
                     <div className="flex flex-col bg-[#fbfbf8] p-4 rounded-2xl border border-[#e5e5d1]">
-                      <label className="text-xs font-bold text-[#4A4A3A] mb-1 flex justify-between">
+                      <label htmlFor="other-items-num" className="text-xs font-bold text-[#4A4A3A] mb-1 flex justify-between">
                         <span>Other Purchases</span>
                         <span className="text-[#C18C74] font-mono font-bold">{otherItems}</span>
                       </label>
@@ -526,6 +552,8 @@ export default function ActivityLogger({ onSaveLog, existingLogs }: ActivityLogg
                       <div className="flex items-center space-x-2">
                         <button
                           type="button"
+                          id="btn-other-decrease"
+                          aria-label="Decrease other purchases items"
                           onClick={() => setOtherItems(Math.max(0, otherItems - 1))}
                           className="h-8 w-8 flex items-center justify-center rounded-xl bg-white border border-[#e5e5d1] hover:bg-[#efefdf] text-[#4A4A3A] font-bold cursor-pointer"
                         >
@@ -533,6 +561,7 @@ export default function ActivityLogger({ onSaveLog, existingLogs }: ActivityLogg
                         </button>
                         <input
                           type="number"
+                          id="other-items-num"
                           min="0"
                           value={otherItems}
                           onChange={(e) => setOtherItems(Math.max(0, Number(e.target.value)))}
@@ -540,6 +569,8 @@ export default function ActivityLogger({ onSaveLog, existingLogs }: ActivityLogg
                         />
                         <button
                           type="button"
+                          id="btn-other-increase"
+                          aria-label="Increase other purchases items"
                           onClick={() => setOtherItems(otherItems + 1)}
                           className="h-8 w-8 flex items-center justify-center rounded-xl bg-white border border-[#e5e5d1] hover:bg-[#efefdf] text-[#4A4A3A] font-bold cursor-pointer"
                         >

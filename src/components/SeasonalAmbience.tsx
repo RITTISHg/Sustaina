@@ -245,6 +245,8 @@ export function SeasonalAmbience() {
               return (
                 <button
                   key={s}
+                  id={`season-toggle-${s}`}
+                  aria-label={`Switch to ${meta.label} visual ambience`}
                   onClick={() => setSeason(s)}
                   className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all duration-300 cursor-pointer whitespace-nowrap ${
                     active 

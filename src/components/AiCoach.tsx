@@ -386,6 +386,8 @@ export default function AiCoach({ logs, challenges }: AiCoachProps) {
         >
           <input
             type="text"
+            id="eco-chat-input"
+            aria-label="Ask the Eco-Coach AI"
             value={typedMessage}
             placeholder="Ex: Should I choose paper or plastic storage options to prevent carbon leakage?..."
             onChange={(e) => setTypedMessage(e.target.value)}
@@ -394,10 +396,12 @@ export default function AiCoach({ logs, challenges }: AiCoachProps) {
           />
           <button
             type="submit"
+            id="eco-chat-submit"
+            aria-label="Send message"
             disabled={sendingMsg || !typedMessage.trim()}
             className="bg-[#5A5A40] hover:bg-[#4A4A3A] disabled:opacity-60 disabled:hover:bg-[#5A5A40] text-white font-bold font-sans py-2.5 px-5 rounded-2xl shadow-xs flex items-center justify-center flex-shrink-0 cursor-pointer hover:scale-[1.01] transition-transform"
           >
-            <Send className="h-4 w-4" />
+            <Send className="h-4 w-4" aria-hidden="true" />
           </button>
         </form>
       </div>

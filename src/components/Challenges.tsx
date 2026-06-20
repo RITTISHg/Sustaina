@@ -71,10 +71,14 @@ export default function Challenges({ challenges, onToggleChallenge }: Challenges
           const IconComponent = theme.icon;
           
           return (
-            <div 
+            <button 
+              type="button"
+              id={`challenge-card-${challenge.id}`}
               key={challenge.id}
               onClick={() => onToggleChallenge(challenge.id)}
-              className={`group flex items-start gap-4 p-5 rounded-2xl border transition-all duration-200 cursor-pointer text-left select-none ${
+              aria-pressed={challenge.completed}
+              aria-label={`Toggle challenge: ${challenge.title}`}
+              className={`group flex items-start gap-4 p-5 rounded-2xl border transition-all duration-200 cursor-pointer text-left select-none w-full font-sans ${
                 challenge.completed
                   ? 'bg-[#f4f4ec] border-[#e5e5d1] opacity-90'
                   : 'bg-[#fbfbf8] border-[#e5e5d1] shadow-xs hover:border-[#5A5A40] hover:bg-[#f4f4ec]/55'
@@ -102,11 +106,11 @@ export default function Challenges({ challenges, onToggleChallenge }: Challenges
                   </span>
                 </div>
 
-                <h4 className={`font-serif italic text-sm font-bold truncate transition-colors ${
+                <span className={`block font-serif italic text-sm font-bold truncate transition-colors ${
                   challenge.completed ? 'text-[#8b8b74] line-through' : 'text-[#4A4A3A] group-hover:text-[#5A5A40]'
                 }`}>
                   {challenge.title}
-                </h4>
+                </span>
 
                 <p className={`text-xs leading-relaxed ${
                   challenge.completed ? 'text-[#8b8b74]' : 'text-[#6b6b5a]'
@@ -114,7 +118,7 @@ export default function Challenges({ challenges, onToggleChallenge }: Challenges
                   {challenge.description}
                 </p>
               </div>
-            </div>
+            </button>
           );
         })}
       </div>

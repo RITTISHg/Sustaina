@@ -38,6 +38,8 @@ export default function Navbar({ currentStreak, totalSavedCo2, activeTab, setAct
             return (
               <button
                 key={tab.id}
+                id={`nav-tab-${tab.id}`}
+                aria-label={`Switch to ${tab.label}`}
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center space-x-1.5 px-4 py-2 rounded-2xl font-sans text-sm font-semibold transition-all duration-200 cursor-pointer ${
                   isActive
@@ -45,7 +47,7 @@ export default function Navbar({ currentStreak, totalSavedCo2, activeTab, setAct
                     : 'text-[#6b6b5a] hover:bg-[#efefdf] hover:text-[#4A4A3A] border border-transparent'
                 }`}
               >
-                <Icon className="h-4 w-4" />
+                <Icon className="h-4 w-4" aria-hidden="true" />
                 <span>{tab.label}</span>
               </button>
             );
@@ -76,12 +78,14 @@ export default function Navbar({ currentStreak, totalSavedCo2, activeTab, setAct
           return (
             <button
               key={tab.id}
+              id={`mobile-nav-tab-${tab.id}`}
+              aria-label={`Switch to ${tab.label}`}
               onClick={() => setActiveTab(tab.id)}
               className={`flex flex-col items-center justify-center py-1.5 px-3 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
                 isActive ? 'text-[#5A5A40]' : 'text-[#6b6b5a] hover:text-[#4A4A3A]'
               }`}
             >
-              <Icon className={`h-4.5 w-4.5 mb-1 ${isActive ? 'text-[#5A5A40]' : 'text-[#8b8b74]'}`} />
+              <Icon className={`h-4.5 w-4.5 mb-1 ${isActive ? 'text-[#5A5A40]' : 'text-[#8b8b74]'}`} aria-hidden="true" />
               <span className="text-[10px]">{tab.label.split(' ')[0]}</span>
             </button>
           );
