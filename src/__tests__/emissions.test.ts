@@ -167,3 +167,76 @@ test('EMISSION_FACTORS values are defined and accurate', () => {
   assert.ok(EMISSION_FACTORS.energy.electricity > 0);
   assert.strictEqual(EMISSION_FACTORS.food.diets['vegan'], 2.45);
 });
+
+test('calculateLogEmissions handles absolute zero input boundary values', () => {
+  const zeroLog = {
+    date: '2026-06-21',
+    transport: { carDistance: 0, carType: 'none' as const, transitDistance: 0, flightDistance: 0, activeDistance: 0 },
+    energy: { electricityKwh: 0, naturalGasKwh: 0, solarPercentage: 0 },
+    food: { dietType: 'vegan' as const, localFoodPercentage: 0, wasteLevel: 'low' as const },
+    shopping: { clothingItems: 0, electronicsItems: 0, otherItems: 0 },
+  };
+
+  const res = calculateLogEmissions(zeroLog);
+  assert.strictEqual(res.transport, 0);
+  assert.strictEqual(res.energy, 0);
+  assert.strictEqual(res.food, 2.45); // vegan base diet
+  assert.strictEqual(res.shopping, 0);
+  assert.strictEqual(res.total, 2.45);
+});
+
+test('calculateLogEmissions computes correct food values for all waste levels', () => {
+  const createFoodLog = (wasteLevel: 'low' | 'medium' | 'high') => ({
+    date: '2026-06-21',
+    transport: { carDistance: 0, carType: 'none' as const, transitDistance: 0, flightDistance: 0, activeDistance: 0 },
+    energy: { electricityKwh: 0, naturalGasKwh: 0, solarPercentage: 0 },
+    food: { dietType: 'average' as const, localFoodPercentage: 0, wasteLevel },
+    shopping: { clothingItems: 0, electronicsItems: 0, otherItems: 0 },
+  });
+
+  const lowWaste = calculateLogEmissions(createFoodLog('low'));
+  const medWaste = calculateLogEmissions(createFoodLog('medium'));
+  const highWaste = calculateLogEmissions(createFoodLog('high'));
+
+  // base average = 5.17
+  assert.strictEqual(lowWaste.food, 5.17); // 5.17 + 0.0
+  assert.strictEqual(medWaste.food, 5.97); // 5.17 + 0.8
+  assert.strictEqual(highWaste.food, 6.97); // 5.17 + 1.8
+});
+
+test('calculateLogEmissions applies exact local food discount formulas', () => {
+  const logWithLocal = (pct: number) => ({
+    date: '2026-06-21',
+    transport: { carDistance: 0, carType: 'none' as const, transitDistance: 0, flightDistance: 0, activeDistance: 0 },
+    energy: { electricityKwh: 0, naturalGasKwh: 0, solarPercentage: 0 },
+    food: { dietType: 'vegan' as const, localFoodPercentage: pct, wasteLevel: 'low' as const },
+    shopping: { clothingItems: 0, electronicsItems: 0, otherItems: 0 },
+  });
+
+  const res0 = calculateLogEmissions(logWithLocal(0));
+  const res50 = calculateLogEmissions(logWithLocal(50));
+  const res100 = calculateLogEmissions(logWithLocal(100));
+
+  // 0% local: 2.45 * (1 - 0) = 2.45
+  assert.strictEqual(res0.food, 2.45);
+  // 50% local: 2.45 * (1 - 0.5 * 0.1) = 2.45 * 0.95 = 2.3275 -> rounded to 2.33
+  assert.strictEqual(res50.food, 2.33);
+  // 100% local: 2.45 * (1 - 1.0 * 0.1) = 2.45 * 0.90 = 2.205 -> rounded to 2.21
+  assert.strictEqual(res100.food, 2.21);
+});
+
+test('calculateLogEmissions handles extreme high values smoothly without crashing', () => {
+  const hugeLog = {
+    date: '2026-06-21',
+    transport: { carDistance: 1000000, carType: 'petrol' as const, transitDistance: 500000, flightDistance: 200000, activeDistance: 1000 },
+    energy: { electricityKwh: 999999, naturalGasKwh: 888888, solarPercentage: 10 },
+    food: { dietType: 'heavy-meat' as const, localFoodPercentage: 10, wasteLevel: 'high' as const },
+    shopping: { clothingItems: 9999, electronicsItems: 5555, otherItems: 22222 },
+  };
+
+  const res = calculateLogEmissions(hugeLog);
+  assert.ok(res.total > 1000000);
+  assert.strictEqual(typeof res.total, 'number');
+  assert.ok(!Number.isNaN(res.total));
+});
+

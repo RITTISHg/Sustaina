@@ -223,7 +223,7 @@ export function SeasonalAmbience() {
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[#fbfbf8]/95 backdrop-blur-md border border-[#e5e5d1] p-3 rounded-2xl shadow-[0_4px_24px_rgba(139,148,116,0.06)]">
           <div className="flex items-center space-x-3">
             <div className={`h-9 w-9 rounded-xl flex items-center justify-center text-white bg-[#5A5A40] shadow-xs transition-transform duration-500 hover:rotate-180`}>
-              <IconComponent className="h-4.5 w-4.5" />
+              <IconComponent className="h-4.5 w-4.5" aria-hidden="true" />
             </div>
             <div>
               <div className="flex items-center space-x-2">
@@ -255,7 +255,7 @@ export function SeasonalAmbience() {
                   }`}
                   title={`Switch to ${meta.label}`}
                 >
-                  <Icon className="h-3.5 w-3.5" />
+                  <Icon className="h-3.5 w-3.5" aria-hidden="true" />
                   <span className="capitalize">{s}</span>
                 </button>
               );

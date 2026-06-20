@@ -246,18 +246,24 @@ export default function DashboardCharts({ logs }: DashboardChartsProps) {
             {/* Layer controllers */}
             <div className="flex flex-row sm:flex-col gap-1.5 shrink-0 bg-[#f4f4ec] p-1.5 rounded-2xl border border-[#e5e5d1]">
               <button 
+                id="globe-layer-carbon"
+                aria-label="Switch to Atmo Carbon layer"
                 onClick={() => setGlobeLayer('carbon')}
                 className={`px-3 py-1.5 text-[10px] font-bold rounded-xl transition-all cursor-pointer ${globeLayer === 'carbon' ? 'bg-[#5A5A40] text-white shadow-xs' : 'text-[#6b6b5a] hover:bg-[#efefdf]'}`}
               >
                 Atmo Carbon
               </button>
               <button 
+                id="globe-layer-canopy"
+                aria-label="Switch to Canopy Cover layer"
                 onClick={() => setGlobeLayer('canopy')}
                 className={`px-3 py-1.5 text-[10px] font-bold rounded-xl transition-all cursor-pointer ${globeLayer === 'canopy' ? 'bg-[#8B9474] text-white shadow-xs' : 'text-[#6b6b5a] hover:bg-[#efefdf]'}`}
               >
                 Canopy Cover
               </button>
               <button 
+                id="globe-layer-ocean"
+                aria-label="Switch to Ocean Thermal layer"
                 onClick={() => setGlobeLayer('ocean')}
                 className={`px-3 py-1.5 text-[10px] font-bold rounded-xl transition-all cursor-pointer ${globeLayer === 'ocean' ? 'bg-[#235882] text-white shadow-xs' : 'text-[#6b6b5a] hover:bg-[#efefdf]'}`}
               >
@@ -389,6 +395,8 @@ export default function DashboardCharts({ logs }: DashboardChartsProps) {
 
             <div className="absolute bottom-1 left-4 flex items-center space-x-2">
               <button 
+                id="globe-speed-slow"
+                aria-label="Decrease globe spin speed"
                 onClick={() => setGlobeSpinSpeed(prev => Math.min(120, prev + 8))}
                 className="hover:bg-[#efefdf] text-[#4A4A3A] p-1.5 rounded-lg border border-[#e5e5d1] text-[10px] font-bold cursor-pointer transition-transform hover:scale-105 active:scale-95"
                 title="Slower orbit"
@@ -396,6 +404,8 @@ export default function DashboardCharts({ logs }: DashboardChartsProps) {
                 Slow 🐢
               </button>
               <button 
+                id="globe-speed-fast"
+                aria-label="Increase globe spin speed"
                 onClick={() => setGlobeSpinSpeed(prev => Math.max(4, prev - 8))}
                 className="hover:bg-[#efefdf] text-[#4A4A3A] p-1.5 rounded-lg border border-[#e5e5d1] text-[10px] font-bold cursor-pointer transition-transform hover:scale-105 active:scale-95"
                 title="Faster spin"

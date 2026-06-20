@@ -22,7 +22,7 @@ export default function Navbar({ currentStreak, totalSavedCo2, activeTab, setAct
         {/* Logo */}
         <div className="flex items-center space-x-2">
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#5A5A40] text-white shadow-xs">
-            <Leaf className="h-4.5 w-4.5" />
+            <Leaf className="h-4.5 w-4.5" aria-hidden="true" />
           </div>
           <div>
             <span className="font-serif italic text-2xl font-bold tracking-tight text-[#4A4A3A]">Sustaina</span>

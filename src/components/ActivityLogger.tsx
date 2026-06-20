@@ -9,7 +9,14 @@ interface ActivityLoggerProps {
   existingLogs: ActivityLog[];
 }
 
-const CATEGORIES = [
+interface CategoryItem {
+  id: 'transport' | 'energy' | 'food' | 'shopping';
+  label: string;
+  icon: React.ComponentType<{ className?: string; 'aria-hidden'?: string }>;
+  color: string;
+}
+
+const CATEGORIES: CategoryItem[] = [
   { id: 'transport', label: 'Transport', icon: Car, color: 'text-[#4A4A3A] bg-[#efefdf] border-[#e5e5d1]' },
   { id: 'energy', label: 'Energy', icon: Zap, color: 'text-[#4A4A3A] bg-[#fbfbf8] border-[#e5e5d1]' },
   { id: 'food', label: 'Food & Diet', icon: Utensils, color: 'text-[#4A4A3A] bg-[#f4f4ec] border-[#e5e5d1]' },
@@ -150,7 +157,7 @@ export default function ActivityLogger({ onSaveLog, existingLogs }: ActivityLogg
                   key={cat.id}
                   id={`logger-tab-${cat.id}`}
                   aria-label={`Show ${cat.label} logger tab`}
-                  onClick={() => setActiveSegment(cat.id as any)}
+                  onClick={() => setActiveSegment(cat.id)}
                   className={`flex flex-col items-center justify-center p-3 rounded-2xl border text-center transition-all cursor-pointer ${
                     isSelected
                       ? `${cat.color} ring-4 ring-[#5A5A40]/10 font-bold scale-[1.02] shadow-xs`

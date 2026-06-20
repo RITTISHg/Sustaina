@@ -11,7 +11,21 @@ const PORT = 3000;
 
 async function startServer() {
   const app = express();
-  app.use(express.json());
+  
+  // Disable X-Powered-By to prevent framework fingerprinting
+  app.disable("x-powered-by");
+
+  // Secure browser headers via standard middleware
+  app.use((req, res, next) => {
+    res.setHeader("X-Content-Type-Options", "nosniff");
+    res.setHeader("X-Frame-Options", "SAMEORIGIN");
+    res.setHeader("X-XSS-Protection", "1; mode=block");
+    res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+    next();
+  });
+
+  // Limit body size to prevent Denial of Service attacks (max 20kb is perfect for carbon logs)
+  app.use(express.json({ limit: "20kb" }));
 
   // API: Get Personalized Tips based on logged user carbon activity
   app.post("/api/gemini/tips", async (req, res) => {

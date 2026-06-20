@@ -87,9 +87,9 @@ export default function Challenges({ challenges, onToggleChallenge }: Challenges
               {/* Checkbox state indicator */}
               <div className="mt-1 flex-shrink-0 transition-transform duration-200 group-hover:scale-[1.08]">
                 {challenge.completed ? (
-                  <CheckCircle2 className="h-5.5 w-5.5 text-[#8B9474] fill-[#efefdf]" />
+                  <CheckCircle2 className="h-5.5 w-5.5 text-[#8B9474] fill-[#efefdf]" aria-hidden="true" />
                 ) : (
-                  <Circle className="h-5.5 w-5.5 text-[#8b8b74] group-hover:text-[#5A5A40]" />
+                  <Circle className="h-5.5 w-5.5 text-[#8b8b74] group-hover:text-[#5A5A40]" aria-hidden="true" />
                 )}
               </div>
 

@@ -69,7 +69,7 @@ export default function AiCoach({ logs, challenges }: AiCoachProps) {
           smartTips: data.smartTips || data.tips || [],
           isFallback: !!data.isFallback
         });
-      } catch (err: any) {
+      } catch (err) {
         console.error(err);
         setErrorTips("Failed to sync audit data. Review your server configuration.");
         // Fallback local mock simulation so it always shows content
