@@ -19,7 +19,7 @@ async function startServer() {
       const { logs, activeChallenges } = req.body;
 
       if (!logs || !Array.isArray(logs) || logs.length === 0) {
-        return res.status(405).json({
+        return res.status(400).json({
           error: "Invalid input. Please submit historical carbon activity logs."
         });
       }

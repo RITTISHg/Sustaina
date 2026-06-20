@@ -120,7 +120,7 @@ export default function App() {
   };
 
   // 3. User Handlers
-  const handleSaveLog = (draftMetrics: Omit<ActivityLog, 'transport' | 'energy' | 'food' | 'shopping' | 'id' | 'calculatedEmissions'> & any, date: string) => {
+  const handleSaveLog = (draftMetrics: Omit<ActivityLog, 'id' | 'calculatedEmissions'>, date: string) => {
     // Check if entry for date already exists
     const emissions = calculateLogEmissions(draftMetrics);
     
